@@ -32,9 +32,9 @@ public class JdbcDemultiplexingSinkExample {
                         @Override
                         public Sink<String> createSink(String route, String element) {
                             return new SampleJdbcSink(
-                        "your-jdbc-url",
-                        "your-username",
-                        "your-password",
+                                "your-jdbc-url",
+                                "your-username",
+                                "your-password",
                                 route
                             );
                         }
@@ -47,10 +47,10 @@ public class JdbcDemultiplexingSinkExample {
     }
 
     private record SampleJdbcSink(
-            String jdbcUrl,
-            String username,
-            String password,
-            String tableName
+        String jdbcUrl,
+        String username,
+        String password,
+        String tableName
     ) implements Sink<String>, Serializable {
         @Override
         public SinkWriter<String> createWriter(WriterInitContext context) {
@@ -123,9 +123,13 @@ public class JdbcDemultiplexingSinkExample {
                     executeBatch();
                 } finally {
                     try {
-                        if (preparedStatement != null) preparedStatement.close();
+                        if (preparedStatement != null) {
+                            preparedStatement.close();
+                        }
                     } finally {
-                        if (connection != null) connection.close();
+                        if (connection != null) {
+                            connection.close();
+                        }
                     }
                 }
             }
