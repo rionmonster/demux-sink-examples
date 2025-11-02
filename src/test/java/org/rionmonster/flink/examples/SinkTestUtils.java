@@ -1,4 +1,4 @@
-package org.rionmonster.flink.examples.file;
+package org.rionmonster.flink.examples;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 

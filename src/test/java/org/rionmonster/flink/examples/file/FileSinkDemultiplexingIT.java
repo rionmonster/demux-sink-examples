@@ -5,7 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.rionmonster.flink.examples.DemultiplexingSink;
+import org.rionmonster.flink.examples.SinkTestUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -84,9 +86,8 @@ public class FileSinkDemultiplexingIT {
             "{\"topic\":\"topic-d\",\"payload\":\"Data for D\"}"
         );
 
-        // When: Process messages
+        // Act
         StreamExecutionEnvironment streamEnv = SinkTestUtils.createTestStreamEnvironment();
-
         streamEnv
             .fromData(messages)
             .sinkTo(new DemultiplexingSink<>(
@@ -95,6 +96,7 @@ public class FileSinkDemultiplexingIT {
             ));
         SinkTestUtils.executeAndWait(streamEnv, 1000);
 
+        // Assert
         assertDirectoryExistsWithExpectedContent(Map.of(
             "topic-a", Set.of(
                 "Data for A",

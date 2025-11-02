@@ -18,23 +18,17 @@ import java.time.Duration;
 /**
  * Serializable router for file sink tests.
  */
-class FileSinkRouter implements SinkRouter<String, String>, Serializable {
+record FileSinkRouter(String basePath) implements SinkRouter<String, String>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private final String basePath;
-
-    FileSinkRouter(String basePath) {
-        this.basePath = basePath;
-    }
-
     @Override
     public String getRoute(String element) {
         try {
             RoutableMessage message = MAPPER.readValue(element, RoutableMessage.class);
-            return message.getTopic();
+            return message.topic();
         } catch (IOException e) {
             throw new RuntimeException("Failed to parse message JSON", e);
         }
@@ -45,14 +39,14 @@ class FileSinkRouter implements SinkRouter<String, String>, Serializable {
         Path routePath = new Path(basePath + "/" + route);
 
         return FileSink
-                .forRowFormat(routePath, new SimpleStringEncoder<String>("UTF-8"))
-                .withRollingPolicy(
-                        DefaultRollingPolicy.builder()
-                                .withRolloverInterval(Duration.ofMinutes(15))
-                                .withInactivityInterval(Duration.ofMinutes(5))
-                                .withMaxPartSize(MemorySize.ofMebiBytes(128))
-                                .build()
-                )
-                .build();
+            .forRowFormat(routePath, new SimpleStringEncoder<String>("UTF-8"))
+            .withRollingPolicy(
+                DefaultRollingPolicy.builder()
+                    .withRolloverInterval(Duration.ofMinutes(15))
+                    .withInactivityInterval(Duration.ofMinutes(5))
+                    .withMaxPartSize(MemorySize.ofMebiBytes(128))
+                    .build()
+            )
+            .build();
     }
 }
