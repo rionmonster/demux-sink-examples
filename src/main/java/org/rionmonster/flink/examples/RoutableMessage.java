@@ -2,6 +2,7 @@ package org.rionmonster.flink.examples;
 
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -9,27 +10,20 @@ import java.io.Serializable;
  * This can be used to test the DemultiplexingSink by routing messages
  * to different destinations based on the topic field.
  */
-public class RoutableMessage implements Serializable {
+public record RoutableMessage(
+    @JsonProperty("topic") String topic,
+    @JsonProperty("payload") String payload
+) implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("topic")
-    private final String topic;
-
-    @JsonProperty("payload")
-    private final String payload;
-
-    public RoutableMessage(
-            @JsonProperty("topic") String topic,
-    @JsonProperty("payload") String payload) {
-        this.topic = topic;
-        this.payload = payload;
-    }
-
-    public String getTopic() {
+    @Override
+    public String topic() {
         return topic;
     }
 
-    public String getPayload() {
+    @Override
+    public String payload() {
         return payload;
     }
 
@@ -44,16 +38,9 @@ public class RoutableMessage implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RoutableMessage)) return false;
-        RoutableMessage that = (RoutableMessage) o;
+        if (!(o instanceof RoutableMessage that)) return false;
         return topic.equals(that.topic) && payload.equals(that.payload);
     }
 
-    @Override
-    public int hashCode() {
-        int result = topic.hashCode();
-        result = 31 * result + payload.hashCode();
-        return result;
-    }
 }
 
