@@ -17,6 +17,7 @@
         <flink.version>2.0.0</flink.version>
         <flink-file-connector.version>2.0.0</flink-file-connector.version>
         <postgresql.version>42.7.4</postgresql.version>
+        <elasticsearch.version>8.11.0</elasticsearch.version>
         <testcontainers.version>1.20.3</testcontainers.version>
         <jackson.version>2.17.2</jackson.version>
         <junit.version>5.10.0</junit.version>
@@ -47,6 +48,8 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+
 
         <!-- Testing Dependencies -->
         <dependency>
@@ -94,6 +97,24 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Elasticsearch Testing -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>${elasticsearch.version}</version>
         </dependency>
     </dependencies>
 </project>
