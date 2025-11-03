@@ -19,6 +19,8 @@
         <postgresql.version>42.7.4</postgresql.version>
         <elasticsearch.version>8.11.0</elasticsearch.version>
         <testcontainers.version>1.20.3</testcontainers.version>
+        <kafka.version>3.6.0</kafka.version>
+        <flink.kafka.version>4.0.1-2.0</flink.kafka.version>
         <jackson.version>2.17.2</jackson.version>
         <junit.version>5.10.0</junit.version>
         <assertj.version>3.26.3</assertj.version>
@@ -48,8 +50,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-
 
         <!-- Testing Dependencies -->
         <dependency>
@@ -115,6 +115,25 @@
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
             <version>${elasticsearch.version}</version>
+        </dependency>
+
+        <!-- Kafka Dependencies -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka</artifactId>
+            <version>${flink.kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>kafka</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
