@@ -23,6 +23,7 @@ import org.apache.flink.core.io.SimpleVersionedSerializer;
 import org.apache.flink.util.Preconditions;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Collection;
 
 /**
@@ -72,17 +73,16 @@ import java.util.Collection;
  * interface. State from all underlying sink writers is collected and restored appropriately during
  * recovery.
  *
- * @param <InputT> The type of input elements
- * @param <RouteT> The type of route keys used for sink selection
+ * @param <InputT>   The type of input elements
+ * @param <RouteT>   The type of route keys used for sink selection
+ * @param sinkRouter The router that determines how elements are routed to sinks.
  */
 @PublicEvolving
-public class DemultiplexingSink<InputT, RouteT>
+public record DemultiplexingSink<InputT, RouteT>(SinkRouter<InputT, RouteT> sinkRouter)
         implements Sink<InputT>, SupportsWriterState<InputT, DemultiplexingSinkState<RouteT>> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-
-    /** The router that determines how elements are routed to sinks. */
-    private final SinkRouter<InputT, RouteT> sinkRouter;
 
     /**
      * Creates a new demultiplexing sink with the given router.
@@ -115,7 +115,8 @@ public class DemultiplexingSink<InputT, RouteT>
      *
      * @return The sink router
      */
-    public SinkRouter<InputT, RouteT> getSinkRouter() {
+    @Override
+    public SinkRouter<InputT, RouteT> sinkRouter() {
         return sinkRouter;
     }
 }

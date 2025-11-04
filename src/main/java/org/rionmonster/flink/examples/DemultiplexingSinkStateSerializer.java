@@ -69,7 +69,7 @@ public class DemultiplexingSinkStateSerializer<RouteT>
         final DataOutputSerializer out = new DataOutputSerializer(256);
 
         // Write the number of routes
-        final Map<RouteT, byte[]> routeStates = state.getRouteStates();
+        final Map<RouteT, byte[]> routeStates = state.routeStates();
         out.writeInt(routeStates.size());
 
         // Write each route and its state
