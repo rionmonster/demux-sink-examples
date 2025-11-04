@@ -47,7 +47,6 @@ public class ElasticsearchSinkDemultiplexingIT {
 
     private ElasticsearchClient elasticsearchClient;
     private RestClient restClient;
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @BeforeEach
     void setup() {

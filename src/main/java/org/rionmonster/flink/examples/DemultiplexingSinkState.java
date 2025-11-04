@@ -20,11 +20,9 @@ package org.rionmonster.flink.examples;
 import org.apache.flink.annotation.PublicEvolving;
 import org.apache.flink.util.Preconditions;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * State class for {@link DemultiplexingSink} that tracks the state of individual sink writers for
@@ -37,20 +35,14 @@ import java.util.Objects;
  *   <li>Metadata about which routes are currently active
  * </ul>
  *
- * @param <RouteT> The type of route keys
+ * @param <RouteT>    The type of route keys
+ * @param routeStates Map of route keys to their serialized sink writer states.
  */
 @PublicEvolving
-public class DemultiplexingSinkState<RouteT> implements Serializable {
+public record DemultiplexingSinkState<RouteT>(Map<RouteT, byte[]> routeStates) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-
-    /** Map of route keys to their serialized sink writer states. */
-    private final Map<RouteT, byte[]> routeStates;
-
-    /** Creates a new empty demultiplexing sink state. */
-    public DemultiplexingSinkState() {
-        this.routeStates = new HashMap<>();
-    }
 
     /**
      * Creates a new demultiplexing sink state with the given route states.
@@ -90,7 +82,7 @@ public class DemultiplexingSinkState<RouteT> implements Serializable {
      *
      * @return An unmodifiable set of route keys
      */
-    public java.util.Set<RouteT> getRoutes() {
+    public Set<RouteT> getRoutes() {
         return Collections.unmodifiableSet(routeStates.keySet());
     }
 
@@ -99,7 +91,8 @@ public class DemultiplexingSinkState<RouteT> implements Serializable {
      *
      * @return An unmodifiable map of route keys to their serialized states
      */
-    public Map<RouteT, byte[]> getRouteStates() {
+    @Override
+    public Map<RouteT, byte[]> routeStates() {
         return Collections.unmodifiableMap(routeStates);
     }
 
@@ -141,7 +134,7 @@ public class DemultiplexingSinkState<RouteT> implements Serializable {
             byte[] value = entry.getValue();
             byte[] otherValue = that.routeStates.get(key);
 
-            if (!java.util.Arrays.equals(value, otherValue)) {
+            if (!Arrays.equals(value, otherValue)) {
                 return false;
             }
         }
@@ -154,7 +147,7 @@ public class DemultiplexingSinkState<RouteT> implements Serializable {
         int result = 1;
         for (Map.Entry<RouteT, byte[]> entry : routeStates.entrySet()) {
             result = 31 * result + Objects.hashCode(entry.getKey());
-            result = 31 * result + java.util.Arrays.hashCode(entry.getValue());
+            result = 31 * result + Arrays.hashCode(entry.getValue());
         }
         return result;
     }

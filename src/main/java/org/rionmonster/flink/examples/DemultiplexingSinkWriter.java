@@ -193,9 +193,7 @@ public class DemultiplexingSinkWriter<InputT, RouteT>
             final SinkWriter<InputT> writer = entry.getValue();
 
             // Only collect state from stateful sink writers
-            if (writer instanceof StatefulSinkWriter) {
-                StatefulSinkWriter<InputT, ?> statefulWriter =
-                        (StatefulSinkWriter<InputT, ?>) writer;
+            if (writer instanceof StatefulSinkWriter<InputT, ?> statefulWriter) {
 
                 try {
                     List<?> writerStates = statefulWriter.snapshotState(checkpointId);
