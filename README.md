@@ -2,7 +2,10 @@
 
 A collection of end-to-end samples that demonstrate how to route Apache Flink 2.x streams to multiple destinations at runtime using a custom **Demultiplexing Sink**. Each example pairs production-style sink implementations with integration tests powered by [Testcontainers](https://testcontainers.com/) so you can see how dynamic routing behaves against real Kafka, JDBC (PostgreSQL), Elasticsearch, and filesystem backends.
 
-The hope is that at some point these could be potentially adopted into Flink Core if there was enough community-driven interest
+## Origin and Goals
+Ideally if there was enough community interest in the project, I'd love to work with an existing committer to draft and move forward with a proper FLIP to introduce it to the Flink Core itself. 
+
+This feature stems from work that was originally done to provide this behavior in Elasticsearch (see [FLINK-23977](https://issues.apache.org/jira/browse/FLINK-23977) for context) and later generalized within [FLINK-24493](https://issues.apache.org/jira/browse/FLINK-24493) to target the V2 Sink API.
 
 ## Highlights
 - Builds on the Flink Sink V2 API with a `DemultiplexingSink` that caches writers per route and restores them from checkpoints for fault tolerance.
@@ -11,8 +14,8 @@ The hope is that at some point these could be potentially adopted into Flink Cor
 - Provides integration tests that spin up the target services via Testcontainers and assert ordering, batching, and dynamic route creation.
 
 ## Repository Layout
-- `src/main/java/org/rionmonster/flink/examples` – core sink implementation (`DemultiplexingSink`, writer/state helpers, `SinkRouter`) and example jobs under connector-specific packages.
-- `src/test/java/org/rionmonster/flink/examples` – integration tests and utility routers/writers for each connector.
+- [`src/main/java/org/rionmonster/flink/examples`](https://github.com/rionmonster/demux-sink-examples/tree/main/src/main/java/org/rionmonster/flink/examples) – core sink implementation (`DemultiplexingSink`, writer/state helpers, `SinkRouter`) and example jobs under connector-specific packages.
+- [`src/test/java/org/rionmonster/flink/examples`](https://github.com/rionmonster/demux-sink-examples/tree/main/src/test/java/org/rionmonster/flink/examples) – integration tests and utility routers/writers for each connector.
 - `pom.xml` – Maven build targeting Java 17 and Flink 2.0.0 with connector/test dependencies.
 
 ## Prerequisites
