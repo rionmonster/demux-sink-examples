@@ -2,10 +2,11 @@
 
 A collection of end-to-end samples that demonstrate how to route Apache Flink 2.x streams to multiple destinations at runtime using a custom **Demultiplexing Sink**. Each example pairs production-style sink implementations with integration tests powered by [Testcontainers](https://testcontainers.com/) so you can see how dynamic routing behaves against real Kafka, JDBC (PostgreSQL), Elasticsearch, and filesystem backends.
 
-## Origin and Goals
-Ideally if there was enough community interest in the project, I'd love to work with an existing committer to draft and move forward with a proper FLIP to introduce it to the Flink Core itself. 
 
-This feature stems from work that was originally done to provide this behavior in Elasticsearch (see [FLINK-23977](https://issues.apache.org/jira/browse/FLINK-23977) for context) and later generalized within [FLINK-24493](https://issues.apache.org/jira/browse/FLINK-24493) to target the V2 Sink API.
+## Origin and Goals
+Ideally if there was enough community interest in the project, I'd love to work with an existing committer to draft and move forward with a proper FLIP to introduce it to the Flink Core itself. This feature stems from work that was originally done to provide this behavior in Elasticsearch (see [FLINK-23977](https://issues.apache.org/jira/browse/FLINK-23977) for context) and later generalized within [FLINK-24493](https://issues.apache.org/jira/browse/FLINK-24493) to target the V2 Sink API. 
+
+[This related blog post](https://rion.io/2025/11/05/exploring-dynamic-sink-routing-in-apache-flink-via-demultiplexingsink/) summarizes a bit of the history of the proposed sink, how it works, and highlights some of the same examples found within this repo.
 
 ## Highlights
 - Builds on the Flink Sink V2 API with a `DemultiplexingSink` that caches writers per route and restores them from checkpoints for fault tolerance.
