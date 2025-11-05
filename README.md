@@ -34,23 +34,6 @@ mvn clean verify
 
 > **Note:** Integration tests start Kafka, PostgreSQL, and Elasticsearch containers. Ensure Docker is running. To skip them while iterating, add `-DskipITs`.
 
-## Running the Sample Jobs
-
-The connectors in `src/main` are self-contained jobs that create a `DemultiplexingSink` and feed a few sample records via `StreamExecutionEnvironment#fromData(...)`. Replace the placeholder connection details with values for your environment, then:
-
-1. Build the shaded application JAR (skip tests if you only need the artifact):
-   ```bash
-   mvn clean package -DskipTests
-   ```
-2. Submit one of the examples to your Flink cluster, e.g. the Kafka variant:
-   ```bash
-   flink run \
-     -c org.rionmonster.flink.examples.kafka.KafkaDemultiplexingSinkExample \
-     target/demux-sink-examples-1.0-SNAPSHOT.jar
-   ```
-
-Each example demonstrates a different routing strategy—by topic for Kafka, by index for Elasticsearch, by table for JDBC, or by directory/file prefix for FileSink.
-
 ## Customising the Demultiplexing Sink
 
 Extending the examples typically involves implementing your own `SinkRouter`. Provide deterministic routing keys and create a connector-specific sink when a new route is encountered. For reference, the Kafka example routes messages based on the JSON `topic` field:
